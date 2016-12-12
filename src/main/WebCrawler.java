@@ -11,13 +11,8 @@ public class WebCrawler {
 	private static WebpageDownloader wd = new WebpageDownloader();
 	
 	private static  void callWebPageDownloader(String url){
-<<<<<<< HEAD
 		wd.start(url, "a");
 		wd.start(url, "body");
-=======
-		wd.start(url, "a", url.substring(7, 12));
-		wd.start(url, "body", url.substring(7, 12));
->>>>>>> origin/master
 		
 	}
 	public static void main(String args[]){
