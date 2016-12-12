@@ -10,9 +10,9 @@ public class WebCrawler {
 	private final static String webLinks = "webLinks.txt";
 	private static WebpageDownloader wd = new WebpageDownloader();
 	
-	private static  void callWebPageDownloader(String line){
-		wd.start(line, "a", line.substring(7, 12));
-		wd.start(line, "body", line.substring(7, 12));
+	private static  void callWebPageDownloader(String url){
+		wd.start(url, "a");
+		wd.start(url, "body");
 		
 	}
 	public static void main(String args[]){
@@ -22,10 +22,9 @@ public class WebCrawler {
 			InputStreamReader reader = new InputStreamReader(file);
 			BufferedReader buff = new BufferedReader (reader);
 			
-			String line = null;
-			while((line = buff.readLine())!= null){
-				callWebPageDownloader(line);
-//				System.out.println(line);
+			String url = null;
+			while((url = buff.readLine())!= null){
+				callWebPageDownloader(url);
 			}
 
 		} catch (IOException e) {
