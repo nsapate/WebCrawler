@@ -18,6 +18,7 @@ public class WebCrawler {
 	public static void main(String args[]){
 
 		try {
+			SearchResultParser.search();
 			FileInputStream file = new FileInputStream(webLinks);
 			InputStreamReader reader = new InputStreamReader(file);
 			BufferedReader buff = new BufferedReader (reader);

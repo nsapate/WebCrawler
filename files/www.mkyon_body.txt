@@ -1,0 +1,219 @@
+Toggle navigation Android Java Core Java I/O Java XML Java JSON Java RegEx JDBC Spring Spring Core Spring MVC Spring Security Spring Data MongoDB Spring Batch Frameworks  JSF 2.0 Hibernate ORM Apache Wicket Struts 1 Struts 2 JAX-RS (REST) JAX-WS (SOAP) jUnit TestNG Misc Google App Engine Apache Ant Apache Maven jQuery Java MongoDB Quartz Scheduler Log4j  Contact Us jsoup HTML parser hello world examples By mkyong | January 16, 2013 | Updated : October 9, 2013 | Viewed : 194,168 times +801 pv/w Jsoup, a HTML parser, its “jquery-like” and “regex” selector syntax is very easy to use and flexible enough to get whatever you want. Below are three examples to show you how to use Jsoup to get links, images, page title and “div” element content from a HTML page. Download jsoup The jsoup is available in Maven central repository. For non-Maven user, just download it from jsoup website. 
+  <dependency>
+	<groupId>org.jsoup</groupId>
+	<artifactId>jsoup</artifactId>
+	<version>1.7.1</version>
+  </dependency>
+ 1. Grabs All Hyperlinks This example shows you how to use jsoup to get page’s title and grabs all links from “google.com”. HTMLParserExample1.java 
+package com.mkyong;
+
+import java.io.IOException;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+public class HTMLParserExample1 {
+
+  public static void main(String[] args) {
+
+	Document doc;
+	try {
+
+		// need http protocol
+		doc = Jsoup.connect("http://google.com").get();
+
+		// get page title
+		String title = doc.title();
+		System.out.println("title : " + title);
+
+		// get all links
+		Elements links = doc.select("a[href]");
+		for (Element link : links) {
+
+			// get the value from href attribute
+			System.out.println("\nlink : " + link.attr("href"));
+			System.out.println("text : " + link.text());
+
+		}
+
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+
+  }
+
+}
+ Output 
+title : Google
+
+link : http://www.google.com.my/imghp?hl=en&tab=wi
+text : Images
+
+link : http://maps.google.com.my/maps?hl=en&tab=wl
+text : Maps
+
+//omitted for readability
+ Note It’s recommended to specify a “ userAgent” in Jsoup, to avoid HTTP 403 error messages. 
+    Document doc = Jsoup.connect("http://anyurl.com")
+	.userAgent("Mozilla")
+	.get();
+ 2. Grabs All Images The second example shows you how to use the Jsoup regex selector to grab all image files (png, jpg, gif) from “yahoo.com”. HTMLParserExample2.java 
+package com.mkyong;
+
+import java.io.IOException;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+public class HTMLParserExample2 {
+
+  public static void main(String[] args) {
+
+	Document doc;
+	try {
+
+		//get all images
+		doc = Jsoup.connect("http://yahoo.com").get();
+		Elements images = doc2.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
+		for (Element image : images) {
+
+			System.out.println("\nsrc : " + image.attr("src"));
+			System.out.println("height : " + image.attr("height"));
+			System.out.println("width : " + image.attr("width"));
+			System.out.println("alt : " + image.attr("alt"));
+
+		}
+
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+
+  }
+
+}
+ Output 
+src : http://l.yimg.com/a/i/mntl/ww/events/p.gif
+height : 50
+width : 202
+alt : Yahoo!
+
+src : http://l.yimg.com/a/i/ww/met/intl_flag_icons/20111011/my_flag.gif
+height : 
+width : 
+alt :
+
+//omitted for readability
+ 3. Get Meta elements The last example simulate an offline HTML page and use jsoup to parse the content. It grabs the “meta” keyword and description, and also the div element with the id of “color”. HTMLParserExample3.java 
+package com.mkyong;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+public class HTMLParserExample3 {
+
+  public static void main(String[] args) {
+
+	StringBuffer html = new StringBuffer();
+		
+	html.append("<!DOCTYPE html>");
+	html.append("<html lang=\"en\">");
+	html.append("<head>");
+	html.append("<meta charset=\"UTF-8\" />");
+	html.append("<title>Hollywood Life</title>");
+	html.append("<meta name=\"description\" content=\"The latest entertainment news\" />");
+	html.append("<meta name=\"keywords\" content=\"hollywood gossip, hollywood news\" />");
+	html.append("</head>");
+	html.append("<body>");
+	html.append("<div id='color'>This is red</div> />");
+	html.append("</body>");
+	html.append("</html>");
+		
+	Document doc = Jsoup.parse(html.toString());
+
+	//get meta description content
+	String description = doc.select("meta[name=description]").get(0).attr("content");
+	System.out.println("Meta description : " + description);
+		
+	//get meta keyword content
+	String keywords = doc.select("meta[name=keywords]").first().attr("content");
+	System.out.println("Meta keyword : " + keywords);
+	
+	String color1 = doc.getElementById("color").text();
+	String color2 = doc.select("div#color").get(0).text();
+		
+	System.out.println(color1);
+	System.out.println(color2);
+		
+  }
+
+}
+ Output 
+Meta description : The latest entertainment news
+Meta keyword : hollywood gossip, hollywood news
+This is red
+This is red
+ 4. Grabs Form Inputs This code snippets shows you how to use Jsoup to grab HTML form inputs (name and value). For detail usage, please refer to this automate login a website with Java. 
+public void getFormParams(String html){
+  
+	Document doc = Jsoup.parse(html);
+ 
+	//HTML form id
+	Element loginform = doc.getElementById("your_form_id");
+
+	Elements inputElements = loginform.getElementsByTag("input");
+
+	List<String> paramList = new ArrayList<String>();
+	for (Element inputElement : inputElements) {
+		String key = inputElement.attr("name");
+		String value = inputElement.attr("value");
+	}
+ 
+}
+ 5. Get Fav Icon This code shows you how to use Jsoup to page’s favourite icon. jSoupExample.java 
+package com.mkyong;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+public class jSoupExample {
+
+    public static void main(String[] args) {
+
+	StringBuffer html = new StringBuffer();
+
+	html.append("<html lang=\"en\">");
+	html.append("<head>");
+	html.append("<link rel=\"icon\" href=\"http://example.com/image.ico\" />");		
+	//html.append("<meta content=\"/images/google_favicon_128.png\" itemprop=\"image\">");
+	html.append("</head>");
+	html.append("<body>");
+	html.append("something");
+	html.append("</body>");
+	html.append("</html>");
+
+	Document doc = Jsoup.parse(html.toString());
+
+	String fav = "";
+			
+	Element element = doc.head().select("link[href~=.*\\.(ico|png)]").first();
+	if(element==null){
+			
+		element = doc.head().select("meta[itemprop=image]").first();
+		if(element!=null){
+			fav = element.attr("content");
+		}
+	}else{
+		fav = element.attr("href");
+	}
+	System.out.println(fav);
+  }
+
+}
+ Output 
+http://example.com/image.ico
+ References http://jsoup.org/ jsoup selector examples jsoup to get page meta content Tags : html parser jsoup Share this article on Twitter Facebook Google+ Related Posts About the Author mkyong Founder of Mkyong.com, love Java and open source stuff. Follow him on Twitter, or befriend him on Facebook or Google Plus. If you like my tutorials, consider make a donation to these charities. Popular Posts Loading... Comments Pingback: mandolin picks() Pingback: car insurance cheapest() Pingback: carlos jose rios grajales() Pingback: 3cm9wy7vf5kcwxjc3ytxk0crtsxergsd() Pingback: xnc5bsxnrbscngfrfgc4ecgdgf() Pingback: xcn5bsn5bvtb7sdn5cnvbttecc() Pingback: ccn2785xdnwdc5bwedsj4wsndb() Sigehere I got following error when i try to run $java HTMLParserExample1 Exception in thread “main” java.lang.NoClassDefFoundError: org/jsoup/Jsoup at HTMLParserExample1.main(HTMLParserExample1.java:16) Caused by: java.lang.ClassNotFoundException: org.jsoup.Jsoup at java.net.URLClassLoader$1.run(URLClassLoader.java:202) at java.security.AccessController.doPrivileged(Native Method) at java.net.URLClassLoader.findClass(URLClassLoader.java:190) at java.lang.ClassLoader.loadClass(ClassLoader.java:306) at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:301) at java.lang.ClassLoader.loadClass(ClassLoader.java:247) … 1 more Anonymous In 4. Grabs Form Inputs what is “List paramList = new ArrayList();” used for? I don’t see it being used in your code snippet. Pingback: Jsoup – Get favicon from html page() Gaurab Pradhan Can you please tell me how to download PDF or DOC etc files from web pages using jsoup?? Ankita Kulkarni Hi, How can I retrieve all the data within the td’s. For example:6:05 Thanks Anonymous I assume you would use the method getElementsByTagName() Diva you can find some more details in the below link<"http://javadomain.in/parsing-title-of-the-website-using-jsoup/&quot; nicky Hi, how to retrieve font-family from below code snippet . body{font-family:Arial, Helvetica, sans-serif;font-size:12pt;padding:0;margin:0;} please help me out on this. thanks, nicky Kavin Please help out me, I tried HTMLParserExample1 as its in the above code But getting, java.net.SocketTimeoutException: connect timed out at java.net.PlainSocketImpl.socketConnect(Native Method) Code: public static void main(String[] args) { Document doc; try { doc = Jsoup.connect(“http://google.com”).get(); String title = doc.title(); System.out.println(“title : ” + title); Elements links = doc.select(“a[href]”); for (Element link : links) { System.out.println(“\nlink : ” + link.attr(“href”)); System.out.println(“text : ” + link.text()); } } Fuxiao System.getProperties().put(“proxySet”, “true”); System.getProperties().put(“proxyHost”, “host”); System.getProperties().put(“proxyPort”, “port”); Add these lines, when use a proxy to approach Internet. Yovan Nice tutorials for JSoup do you have any examples of how can i fetch each and every information resides in each link, something like a web crawling for Jsoup. Sanhita Hi, I need to write a parser which will parse through a jsp page and find a list of specific tags. I tried using SAXParser but getting a lot of exceptions. Can you please suggest me some solutions?? ayaz Really nice tutorial for beginners Thanks Alot!!! Rola hello mkyong, I ran the first example (grab all hyperlinks) but came across java.net.ConnectException: Connection refused: connect error.Is there any way to resolve it? simant great tutorial clear all my query’s about jsoup thanxxx sirr thanxx a lot. Jason Another useful example; thanks again to mkyong! I almost feel bad pointing this out but just for other n00bs out there like me, I believe “doc2” in your HTMLParserExample2.java should be “doc” Current line: Elements images = doc2.select("img[src~=(?i)\\.(png|jpe?g|gif)]"); New line: Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]"); d4y4x http://cp27.web.id/showthread.php?tid=1642 Mamadou I agree that JSoup is great. I’m working with it and amazed that MKyong covered it. Thanks! Giorgos The best as always! Thank you for your excellent example! This api could be valuable for testing web apps as well! Cory It also seems to work on JSPs and JSP 2 tag files without much trouble. Dhrumil really nice example shimul Simply awesome ! Rising Posts (100k-500k pv) Loading... Rising Posts (10k-99k pv) Loading... Rising Posts (<10k pv) Loading... Favorites Links Android Getting Started Google App Engine – Java Spring 2.5.x Documentation Spring 3.2.x Documentation Spring 4.1.x Documentation Java EE 5 Tutorial Java EE 6 Tutorial Java EE 7 Tutorial Java 6 API Java 7 API Java 8 API Oracle J2SE Tutorials JSF Home Page JSP Home Page Maven Central Repository Gradle User Guide Hibernate ORM JAX-WS Home Page JAX-RS Home Page (Jersey) Tomcat 8 Documentation Partners & Bookmarks Java Code Geeks TestNG Founder DZone About Mkyong.com Mkyong.com is for Java and J2EE developers, all examples are simple and easy to understand, and well tested in my development environment. Mkyong.com is created, written by, and maintained by Yong Mook Kim, aka Mkyong. It is built on WordPress, hosted by Liquid Web, and the caches are served by CloudFlare CDN. Copyright © 2008-2016 Mkyong.com, all rights reserved. Privacy Policy
