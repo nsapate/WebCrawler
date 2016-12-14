@@ -20,7 +20,7 @@ public class WebpageDownloader {
 
 		PrintWriter out = null;
 		try {
-			doc = Jsoup.connect(url).timeout(5000).get();
+			doc = Jsoup.connect(url).timeout(10000).get();
 			Elements tags = doc.select(tag);
 			out = new PrintWriter("files/"+ url.substring(7, 16)+"_"+tag+".txt" );
 			if(tag.equals("body")){

@@ -27,7 +27,7 @@ public class SearchResultParser {
 
 		SearchResultParser obj = new SearchResultParser();
 		//Enter your search parameter
-		Set<String> result = obj.getDataFromGoogle("jsoup examples");
+		Set<String> result = obj.getDataFromGoogle("how to be awesome");
 
 		PrintWriter out = null;
 		try {
@@ -55,7 +55,7 @@ public class SearchResultParser {
 	private Set<String> getDataFromGoogle(String query) {
 
 		Set<String> result = new HashSet<String>();
-		String request = "https://www.google.com/search?q=" + query + "&num=3";
+		String request = "https://www.google.com/search?q=" + query + "&num=2";
 		System.out.println("Sending request..." + request);
 
 		try {
