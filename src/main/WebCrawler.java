@@ -11,14 +11,14 @@ public class WebCrawler {
 	private static WebpageDownloader wd = new WebpageDownloader();
 	
 	private static  void callWebPageDownloader(String url){
-		wd.start(url, "a");
+//		wd.start(url, "a");
 		wd.start(url, "body");
 		
 	}
 	public static void main(String args[]){
 
 		try {
-			SearchResultParser.search();
+//			SearchResultParser.search();
 			FileInputStream file = new FileInputStream(webLinks);
 			InputStreamReader reader = new InputStreamReader(file);
 			BufferedReader buff = new BufferedReader (reader);

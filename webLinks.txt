@@ -1,3 +1,1 @@
-https://jsoup.org/cookbook/extracting-data/example-list-links
-http://www.javatpoint.com/jsoup-examples
-http://www.mkyong.com/java/jsoup-html-parser-hello-world-examples/
+http://blogs.hindustantimes.com/capital-closeup/2013/11/20/congress-not-prepared-to-face-delhi-polls/

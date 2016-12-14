@@ -23,11 +23,11 @@ public class WebpageDownloader {
 			doc = Jsoup.connect(url).timeout(5000).get();
 			Elements tags = doc.select(tag);
 			out = new PrintWriter("files/"+ url.substring(7, 16)+"_"+tag+".txt" );
-			if(!tag.equals("a")){
+			if(tag.equals("body")){
 				str = Jsoup.parse(tags.toString()).text();
 				out.print(str);
 			}
-			else{
+			else if(tag.equals("a")){
 				for(Element e : tags){
 					out.println(e.attr("href"));
 				}

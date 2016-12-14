@@ -77,12 +77,9 @@ public class SearchResultParser {
 					}
 				}
 			}
-
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		return result;
 	}
-
 }
